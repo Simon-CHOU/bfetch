@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "c4c21ae9-7181-4f8f-ad97-5bb872daea70",
+		"name": "UP主投稿页",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "分页查询投稿",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"var PhotoItemArray =  jsonData.data.items;\r",
+							"var res = \"\";\r",
+							"PhotoItemArray.forEach(v=>{\r",
+							"    v.pictures.forEach(k=>{\r",
+							"        var imgCdnUrl= k.img_src;\r",
+							"        console.log(imgCdnUrl);\r",
+							"        // pm.sendRequest(imgCdnUrl, function(err, res){\r",
+							"\r",
+							"        // })\r",
+							"        res = res +\",\" + imgCdnUrl;\r",
+							"    })\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"imgCdnUrls\", res);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "cookie",
+						"value": "{{cookie}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "https://api.bilibili.com/x/dynamic/feed/draw/doc_list?uid={{ParmyAU}}&page_num={{pageNum}}&page_size=30&biz=all&jsonp=jsonp",
+					"protocol": "https",
+					"host": [
+						"api",
+						"bilibili",
+						"com"
+					],
+					"path": [
+						"x",
+						"dynamic",
+						"feed",
+						"draw",
+						"doc_list"
+					],
+					"query": [
+						{
+							"key": "uid",
+							"value": "{{ParmyAU}}"
+						},
+						{
+							"key": "page_num",
+							"value": "{{pageNum}}"
+						},
+						{
+							"key": "page_size",
+							"value": "30"
+						},
+						{
+							"key": "biz",
+							"value": "all"
+						},
+						{
+							"key": "jsonp",
+							"value": "jsonp"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
