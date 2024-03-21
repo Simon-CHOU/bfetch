@@ -72,8 +72,11 @@ setTimeout(function () {
             console.log('当前处在B站视频页')
             //up主名称
             var k = document.getElementsByClassName("up-name")
-            if (k[0] === undefined) { // 联合投稿
+            if (k === undefined) { // 联合投稿
                 k = document.getElementsByClassName("staff-name is-vip")
+            }
+            if (k === undefined) { // 联合投稿 特殊处理 BV18S421P7uM  document.getElementsByClassName("staff-name")[0].innerText 
+                k = document.getElementsByClassName("staff-name")
             }
             var upname = k[0].innerText
 
@@ -87,10 +90,12 @@ setTimeout(function () {
 
             //BV号
             var bv = window.location.href.match( /video\/(.*?)\//)[1];
+            //简介
+            var desc = document.getElementsByClassName("desc-info-text")[0].innerText;
 
             //拼接出文件名。
             var output = title.concat('_', datef, '_@', upname, '_', bv)
-            var outputUrl = output.concat('\r\n', 'https://www.bilibili.com/video/', bv)
+            var outputUrl = output.concat('\r\n', desc, '\r\n', 'https://www.bilibili.com/video/', bv)
             console.log(outputUrl)
             navigator.clipboard.writeText(outputUrl)
                 .then(function () {
