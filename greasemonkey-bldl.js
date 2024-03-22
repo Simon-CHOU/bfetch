@@ -92,7 +92,8 @@ setTimeout(function () {
             var bv = window.location.href.match( /video\/(.*?)\//)[1];
             //简介
             var deskInfo = document.getElementsByClassName("desc-info-text")
-            var desc = deskInfo.lengt > 0 ? [0].innerText : ''; //有的视频没有简介，故需要判空 e.g. BV11r42187W6
+            var desc = deskInfo.length > 0 ? deskInfo[0].innerHTML : ''; //有的视频没有简介，故需要判空 e.g. BV11r42187W6 
+            // 有的简介有多行，如果.innerText则不能正确换行 e.g. BV1N1421Q78o
 
             //拼接出文件名。
             var output = title.concat('_', datef, '_@', upname, '_', bv)
