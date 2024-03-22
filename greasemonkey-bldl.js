@@ -31,9 +31,9 @@ setTimeout(function () {
             console.log('当前处在B站视频页')
             //up主名称
             var k = document.getElementsByClassName("up-name")
-            if (k[0] === undefined) { // 联合投稿
-                k = document.getElementsByClassName("staff-name is-vip")
-            }
+            if (k.length === 0) { // 联合投稿
+                k = document.getElementsByClassName("staff-name is-vip")  // 联合投稿一例 e.g. BV1UJ4m1a7PA
+            }            
             var upname = k[0].innerText
 
             //视频标题
@@ -72,10 +72,10 @@ setTimeout(function () {
             console.log('当前处在B站视频页')
             //up主名称
             var k = document.getElementsByClassName("up-name")
-            if (k === undefined) { // 联合投稿
+            if (k.length === 0) { // 联合投稿
                 k = document.getElementsByClassName("staff-name is-vip")
             }
-            if (k === undefined) { // 联合投稿 特殊处理 BV18S421P7uM  document.getElementsByClassName("staff-name")[0].innerText 
+            if (k.length === 0) { // 联合投稿 特殊处理 BV18S421P7uM  document.getElementsByClassName("staff-name")[0].innerText 
                 k = document.getElementsByClassName("staff-name")
             }
             var upname = k[0].innerText
