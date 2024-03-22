@@ -91,7 +91,8 @@ setTimeout(function () {
             //BV号
             var bv = window.location.href.match( /video\/(.*?)\//)[1];
             //简介
-            var desc = document.getElementsByClassName("desc-info-text")[0].innerText;
+            var deskInfo = document.getElementsByClassName("desc-info-text")
+            var desc = deskInfo.lengt > 0 ? [0].innerText : ''; //有的视频没有简介，故需要判空 e.g. BV11r42187W6
 
             //拼接出文件名。
             var output = title.concat('_', datef, '_@', upname, '_', bv)
