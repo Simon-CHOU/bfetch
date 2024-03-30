@@ -44,6 +44,9 @@ setTimeout(function () {
             if (r.length === 0) { 
                 r = document.getElementsByClassName("pubdate") // 有的视频日期class是pubdate，eg.BV1Fa4y1B7HB
             }
+            if (r.length === 0) { 
+                r = document.getElementsByClassName("pubdate-ip-text") // 有的视频日期class是pubdate-ip-text，eg.BV1tt42137gD
+            }
             var date = r[0].innerText
             var datef = date.substring(0, 10)
 
@@ -90,6 +93,9 @@ setTimeout(function () {
             var r = document.getElementsByClassName("pubdate-text")
             if (r.length === 0) { 
                 r = document.getElementsByClassName("pubdate") // 有的视频日期class是pubdate，eg.BV1Fa4y1B7HB
+            }
+            if (r.length === 0) { 
+                r = document.getElementsByClassName("pubdate-ip-text") // 有的视频日期class是pubdate-ip-text，eg.BV1tt42137gD
             }
             var date = r[0].innerText
             var datef = date.substring(0, 10)
