@@ -4,7 +4,7 @@
 // @version      2024-04-26
 // @description  快速复制B站视频元信息
 // @author       You
-// @match        https://www.bilibili.com/video/BV1qC41137Br/?spm_id_from=333.1007.tianma.1-1-1.click&vd_source=b97d3baf74e65b889f76c846dbd12bc1
+// @match        https://www.bilibili.com/video/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bilibili.com
 // @grant        none
 // ==/UserScript==
