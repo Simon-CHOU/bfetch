@@ -5,6 +5,7 @@
 // @description  快速复制B站视频元信息
 // @author       You
 // @match        https://www.bilibili.com/video/*
+// @match        https://www.bilibili.com/list/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bilibili.com
 // @grant        none
 // ==/UserScript==
@@ -39,10 +40,14 @@
                 console.log('当前处在B站视频页')
                 //up主名称
                 var k = document.getElementsByClassName("up-name")
+                var upname;
                 if (k.length === 0) { // 联合投稿
-                    k = document.getElementsByClassName("staff-name is-vip")  // 联合投稿一例 e.g. BV1UJ4m1a7PA
+                    //k = document.getElementsByClassName("staff-name is-vip")  // 联合投稿一例 e.g. BV1UJ4m1a7PA
+                    upname = document.getElementsByClassName("staff-name")[0].childNodes[0].textContent // 联合投稿一例 e.g. BV1Li421h7Kt 只保留第一个
+
+                } else {
+                    upname = k[0].innerText
                 }
-                var upname = k[0].innerText
 
                 //视频标题
                 var t = document.getElementsByClassName("video-title")
@@ -86,13 +91,14 @@
                 console.log('当前处在B站视频页')
                 //up主名称
                 var k = document.getElementsByClassName("up-name")
+                var upname;
                 if (k.length === 0) { // 联合投稿
-                    k = document.getElementsByClassName("staff-name is-vip")
+                    //k = document.getElementsByClassName("staff-name is-vip")  // 联合投稿一例 e.g. BV1UJ4m1a7PA
+                    upname = document.getElementsByClassName("staff-name")[0].childNodes[0].textContent // 联合投稿一例 e.g. BV1Li421h7Kt 只保留第一个
+
+                } else {
+                    upname = k[0].innerText
                 }
-                if (k.length === 0) { // 联合投稿 特殊处理 BV18S421P7uM  document.getElementsByClassName("staff-name")[0].innerText
-                    k = document.getElementsByClassName("staff-name")
-                }
-                var upname = k[0].innerText
 
                 //视频标题
                 var t = document.getElementsByClassName("video-title")
