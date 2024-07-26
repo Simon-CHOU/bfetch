@@ -7,12 +7,15 @@
 #$pattern = '\d{10}-\d-\d{5}.\w\w4'  这里想的是mp4 但是 还有的格式是 m4s
 #$pattern = '\d{10}-\d-\d{5}.(mp4|m4s)'  遇到特殊case   545677085-1-30112.m4s    841662915-1-30080.m4s  前面不够10位，只有9位
 #$pattern = '^\d{9,}-\d-\d{5}.(mp4|m4s)$'   # 还有特殊case带下划线 562014495_nb2-1-30080.m4s   562014495_nb2-1-30280.m4s
-$pattern = '^\d{9,}(_\w+)?-\d-\d{5}.(mp4|m4s)$'
+#$pattern = '^\d{9,}(_\w+)?-\d-\d{5}.(mp4|m4s)$' # 重复的下载 文件名有 (1).mp4 1620582175-1-30280 (1).m4s
+$pattern = '^\d{9,}(_\w+)?-\d-\d{5}( \(\w\))?.(mp4|m4s)$'
 
 #调试regexp 在 https://regex101.com/
 
 # 获取当前目录下的文件
-$files = Get-ChildItem -File
+#$files = Get-ChildItem -File
+# 获取指定目录下的文件 下载目录  浏览器插件猫抓下载的音视频文件默认都在此
+$files = Get-ChildItem -File -Path "C:\Users\simon\Downloads"
 
 # 遍历文件
 foreach ($file in $files) {
