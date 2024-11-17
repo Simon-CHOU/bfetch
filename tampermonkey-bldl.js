@@ -64,7 +64,7 @@
                 var datef = date.substring(0, 10)
 
                 //BV号
-                var bv = window.location.href.match( /video\/(.*?)\//)[1];
+                var bv = window.location.href.match(/video\/([^/?]+)/)[1];
 
                 //拼接出文件名。
                 var output = title.concat('_', datef, '_@', upname, '_', bv)
@@ -115,7 +115,7 @@
                 var datef = date.substring(0, 10)
 
                 //BV号
-                var bv = window.location.href.match( /video\/(.*?)\//)[1];
+                var bv = window.location.href.match(/video\/([^/?]+)/)[1];
                 //简介
                 var deskInfo = document.getElementsByClassName("desc-info-text")
                 var desc = deskInfo.length > 0 ? deskInfo[0].innerHTML : ''; //有的视频没有简介，故需要判空 e.g. BV11r42187W6
