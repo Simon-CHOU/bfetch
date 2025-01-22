@@ -103,6 +103,17 @@
                 return;
             }
             
+            // 获取发布日期
+            const timeDiv = contentItem.querySelector('.ContentItem-time span');
+            let publishDate = '';
+            if (timeDiv) {
+                const dateMatch = timeDiv.getAttribute('data-tooltip')?.match(/发布于\s*(.*)/);
+                publishDate = dateMatch ? dateMatch[1].trim() : '';
+                console.log('找到发布日期:', publishDate);
+            } else {
+                console.log('未找到发布日期元素');
+            }
+            
             const richContentInner = contentItem.querySelector('.RichContent-inner');
             if (!richContentInner) {
                 console.error('未找到 .RichContent-inner 元素');
@@ -142,7 +153,10 @@
             // 组合内容
             let combinedContent = tempDiv.innerHTML;
             if (shareLink) {
-                combinedContent += `\n\n分享链接：${shareLink}`;
+                combinedContent += `<br><br>分享链接：${shareLink}`;
+            }
+            if (publishDate) {
+                combinedContent += `<br><br>发布时间：${publishDate}`;
             }
 
             // 复制到剪贴板
@@ -154,7 +168,7 @@
                 try {
                     const clipboardItem = new ClipboardItem({
                         'text/html': new Blob([combinedContent], { type: 'text/html' }),
-                        'text/plain': new Blob([tempDiv.innerText + (shareLink ? `\n\n分享链接：${shareLink}` : '')], { type: 'text/plain' })
+                        'text/plain': new Blob([tempDiv.innerText + (shareLink ? `\n\n分享链接：${shareLink}` : '') + (publishDate ? `\n\n发布时间：${publishDate}` : '')], { type: 'text/plain' })
                     });
                     await navigator.clipboard.write([clipboardItem]);
                     console.log('使用 navigator.clipboard 复制成功');
