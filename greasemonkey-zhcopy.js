@@ -77,6 +77,14 @@
             
             let shareLink = '';
             if (shareButton) {
+                // 保存当前剪贴板内容
+                let originalClipboard = '';
+                try {
+                    originalClipboard = await navigator.clipboard.readText();
+                } catch (error) {
+                    console.error('读取原始剪贴板内容失败:', error);
+                }
+
                 // 模拟点击分享按钮
                 shareButton.click();
                 console.log('已点击分享按钮');
@@ -86,7 +94,18 @@
                 
                 try {
                     shareLink = await navigator.clipboard.readText();
-                    console.log('获取到分享链接:', shareLink);
+                    // 验证获取的是分享链接而不是完整内容
+                    if (shareLink.includes('发布时间：')) {
+                        console.log('获取到的不是分享链接，清空');
+                        shareLink = '';
+                    } else {
+                        console.log('获取到分享链接:', shareLink);
+                    }
+                    
+                    // 恢复原始剪贴板内容
+                    if (originalClipboard) {
+                        await navigator.clipboard.writeText(originalClipboard);
+                    }
                 } catch (error) {
                     console.error('获取分享链接失败:', error);
                 }
@@ -126,7 +145,7 @@
                 return;
             }
 
-            // 创建临时元素处理内容
+            // 每次都从原始内容创建新的临时元素
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = richText.innerHTML;
 
@@ -150,7 +169,7 @@
                 link.parentNode.replaceChild(span, link);
             });
 
-            // 组合内容
+            // 组合内容时使用原始内容
             let combinedContent = tempDiv.innerHTML;
             if (shareLink) {
                 combinedContent += `<br><br>分享链接：${shareLink}`;
