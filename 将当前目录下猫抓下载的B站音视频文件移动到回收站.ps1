@@ -9,7 +9,8 @@
 #$pattern = '^\d{9,}-\d-\d{5}.(mp4|m4s)$'   # 还有特殊case带下划线 562014495_nb2-1-30080.m4s   562014495_nb2-1-30280.m4s
 #$pattern = '^\d{9,}(_\w+)?-\d-\d{5}.(mp4|m4s)$' # 重复的下载 文件名有 (1).mp4 1620582175-1-30280 (1).m4s
 #$pattern = '^\d{9,}(_\w+)?-\d-\d{5}( \(\w\))?.(mp4|m4s)$'  #无法特殊case 1627954038_sr1-1-100035.mp4 末尾不是5个数，而是六个数
-$pattern = '^\d{9,}(_\w+)?-\d-\d{5,}( \(\w\))?.(mp4|m4s)$'
+#$pattern = '^\d{9,}(_\w+)?-\d-\d{5,}( \(\w\))?.(mp4|m4s)$' #无法匹配重复下载的文件，末尾带有(1)的文件 28725874410-1-100027(1).m4s
+$pattern = '^\d{9,}(_\w+)?-\d-\d{5,}( \(\w\))?(\(1\))?.(mp4|m4s)$'
 
 #调试regexp 在 https://regex101.com/
 
@@ -17,6 +18,7 @@ $pattern = '^\d{9,}(_\w+)?-\d-\d{5,}( \(\w\))?.(mp4|m4s)$'
 #$files = Get-ChildItem -File
 # 获取指定目录下的文件 下载目录  浏览器插件猫抓下载的音视频文件默认都在此
 $files = Get-ChildItem -File -Path "C:\Users\simon\Downloads"
+#$files = Get-ChildItem -File -Path "I:\web-videos\"
 
 # 遍历文件
 foreach ($file in $files) {
