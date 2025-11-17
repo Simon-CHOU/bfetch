@@ -57,6 +57,29 @@
         return document.getElementsByClassName("video-title")[0].innerText;
     }
 
+    function createHomepageUrlFromUpInfo() {
+        const upAnchor = document.querySelector('.up-name[href]');
+        const rawHref = upAnchor ? upAnchor.getAttribute('href') : '';
+        if (!rawHref) return '';
+        try {
+            const urlStr = rawHref.startsWith('//') ? `https:${rawHref}` : rawHref;
+            const u = new URL(urlStr, window.location.origin);
+            const parts = u.pathname.split('/').filter(Boolean);
+            const mid = parts[0] || '';
+            return mid ? `http://space.bilibili.com/${mid}/` : u.href;
+        } catch (e) {
+            return rawHref;
+        }
+    }
+
+    function getUploaderMetaBlock() {
+        const name = getUpName();
+        const descEl = document.querySelector('.up-description.up-detail-bottom');
+        const signature = descEl ? (descEl.getAttribute('title') || descEl.textContent || '').trim() : '';
+        const homepageUrl = createHomepageUrlFromUpInfo();
+        return `@${name}\r\n${signature}\r\n${homepageUrl}`;
+    }
+
     function createOutputString(includeUrl = false) {
         const upname = getUpName();
         const title = getVideoTitle();
@@ -69,6 +92,8 @@
         if (includeUrl) {
             const desc = getDescription();
             output += `\r\n${desc}\r\nhttps://www.bilibili.com/video/${bv}`;
+            const meta = getUploaderMetaBlock();
+            output += `\r\n${meta}`;
         }
         
         return output;
