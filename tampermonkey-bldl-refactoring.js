@@ -49,10 +49,30 @@
     }
 
     function getDescription() {
-        // 简介
-        const descElement = document.getElementsByClassName("desc-info-text");
-        return descElement.length > 0 ? descElement[0].innerHTML : ''; // 有的视频没有简介，故需要判空 e.g. BV11r42187W6
-        // 有的简介有多行，如果.innerText则不能正确换行 e.g. BV1N1421Q78o
+        const container = document.querySelector('#v_desc .basic-desc-info')
+            || document.querySelector('#v_desc')
+            || document.querySelector('.basic-desc-info')
+            || document.querySelector('.video-desc-container')
+            || document.querySelector('.desc-info')
+            || (document.getElementsByClassName('desc-info-text')[0]?.parentElement || null);
+        if (!container) {
+            const descElement = document.getElementsByClassName('desc-info-text');
+            return descElement.length > 0 ? (descElement[0].textContent || '').trim() : '';
+        }
+        let result = '';
+        container.childNodes.forEach(node => {
+            if (node.nodeType === 3) {
+                result += node.textContent;
+            } else if (node.nodeType === 1) {
+                const el = node;
+                if (el.tagName === 'BR') {
+                    result += '\r\n';
+                } else {
+                    result += el.textContent;
+                }
+            }
+        });
+        return result.replace(/[ \t]+/g, ' ').replace(/\s*\r?\n\s*/g, '\r\n').trim();
     }
 
     function getVideoTitle() {
