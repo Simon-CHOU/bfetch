@@ -7,7 +7,10 @@
 // @match        https://www.bilibili.com/video/*
 // @match        https://www.bilibili.com/list/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bilibili.com
-// @grant        none
+// @grant        GM_setClipboard
+// @grant        GM.setClipboard
+// @grant        unsafeWindow
+// @run-at       document-idle
 // ==/UserScript==
 
 (function() {
@@ -99,10 +102,59 @@
         return output;
     }
 
+    function legacyCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        return ok;
+    }
+
     function copyToClipboard(text) {
-        navigator.clipboard.writeText(text)
-            .then(() => console.log('复制成功！'))
-            .catch(err => console.error('复制失败：', err));
+        try {
+            if (typeof GM_setClipboard === 'function') {
+                GM_setClipboard(text, { type: 'text', mimetype: 'text/plain' });
+                console.log('复制成功！');
+                return;
+            }
+            if (typeof GM !== 'undefined' && typeof GM.setClipboard === 'function') {
+                GM.setClipboard(text);
+                console.log('复制成功！');
+                return;
+            }
+            if (typeof unsafeWindow !== 'undefined' && unsafeWindow.navigator && unsafeWindow.navigator.clipboard && typeof unsafeWindow.navigator.clipboard.writeText === 'function') {
+                unsafeWindow.navigator.clipboard.writeText(text)
+                    .then(() => console.log('复制成功！'))
+                    .catch(() => {
+                        if (legacyCopy(text)) {
+                            console.log('复制成功！');
+                        } else {
+                            console.error('复制失败： unsafeWindow.navigator.clipboard 写入失败');
+                        }
+                    });
+                return;
+            }
+        } catch (e) {}
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text)
+                .then(() => console.log('复制成功！'))
+                .catch(err => {
+                    if (legacyCopy(text)) {
+                        console.log('复制成功！');
+                    } else {
+                        console.error('复制失败：', err);
+                    }
+                });
+        } else {
+            if (legacyCopy(text)) {
+                console.log('复制成功！');
+            } else {
+                console.error('复制失败： navigator.clipboard 不可用');
+            }
+        }
     }
 
     function createButton(text, withUrl) {
